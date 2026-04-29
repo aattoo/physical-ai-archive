@@ -34,3 +34,4 @@ Thumbs.db
 # Claude
 .claude/ralph-loop.local.md
 .claude/settings.local.json
+.gstack/
