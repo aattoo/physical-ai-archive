@@ -1,0 +1,28 @@
+name: Daily Physical AI News Scrape
+
+on:
+  schedule:
+    # 매일 오전 9시 KST (= 00:00 UTC)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 수동 트리거 가능
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run scraper
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/scrape-candidates.js

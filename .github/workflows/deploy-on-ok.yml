@@ -1,0 +1,57 @@
+name: Deploy Selected Article
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  deploy:
+    # OK 또는 OK N 댓글인지 확인
+    if: |
+      github.event.issue.state == 'open' &&
+      contains(github.event.issue.labels.*.name, 'candidate') &&
+      startsWith(github.event.comment.body, 'OK')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Update articles-data.ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+        run: node scripts/deploy-selected.js
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build
+        run: bun run build
+
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel --prod --yes --token $VERCEL_TOKEN
+
+      - name: Commit articles-data.ts update
+        run: |
+          git config user.name "physical-ai-bot"
+          git config user.email "bot@physical-ai-archive"
+          git add lib/articles-data.ts
+          git diff --staged --quiet || git commit -m "feat: add article from issue #${{ github.event.issue.number }}"
+          git push
