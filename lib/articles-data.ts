@@ -105,6 +105,14 @@ export const APRIL_ARTICLES: Article[] = [
     imageUrl: 'https://imgnews.pstatic.net/image/014/2026/04/28/0005514778_001_20260428200810017.jpg?type=w800',
   },
   {
+    date: '2026-05-02',
+    title: '휴머노이드 넘어 피지컬 AI로…로봇 ETF 투자지도 넓혔다[ETF언박싱]',
+    source: '',
+    url: 'https://n.news.naver.com/mnews/article/018/0006271706',
+    description: '로봇 투자의 무게중심이 휴머노이드에서 ‘피지컬 AI’ 전반으로 이동하고 있다. 인공지능(AI)이 데이터센터와 소프트웨어 안에 머무르지 않고 자동차, 물류센터, 건설장비, 수술로봇, 스마트글라스 등 현실 세계의 물리적',
+    imageUrl: 'https://imgnews.pstatic.net/image/018/2026/05/02/0006271706_001_20260502073215735.jpg?type&#x3D;w800',
+  },
+  {
     date: '2026-04-28',
     title: '허사비스, 4대 그룹 연쇄 회동… 구글·K제조업 \'AI 동맹\' 다지기',
     source: '국민일보',
